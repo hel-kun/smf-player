@@ -11,6 +11,7 @@ export default function Home() {
           play(file);
         }
       }} />
+      <button>Play</button>
     </div>
   );
 }

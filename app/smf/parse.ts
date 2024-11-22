@@ -1,4 +1,4 @@
-import { SmfData } from "@/app/lib/def";
+import { SmfBinary } from "@/app/lib/def";
 
 const readBinary = (file: File): Promise<ArrayBuffer> => {
   return new Promise((resolve, reject) => {
@@ -28,11 +28,14 @@ const searchBinary = (buffer: ArrayBuffer, target: Uint8Array): number[] => {
       positions.push(i);
     }
   }
+  if (positions.length === 0) {
+    positions.push(-1);
+  }
   return positions;
 };
 
-export const parse = async (smfFile: File): Promise<SmfData> => {
-  const data: SmfData = {
+export const parse = async (smfFile: File): Promise<SmfBinary> => {
+  const data: SmfBinary = {
     file: smfFile,
     header: new ArrayBuffer(0),
     track: [],
@@ -54,7 +57,7 @@ export const parse = async (smfFile: File): Promise<SmfData> => {
     if (trackPoints[i] === -1) {
       throw new Error("Invalid SMF file");
     }
-    const trackLength: number = new DataView(buffer, trackPoints[i] + 4, trackPoints[i] + 8).getUint32(0) + 8;
+    const trackLength: number = new DataView(buffer, trackPoints[i] + 4, 4).getUint32(0) + 8;
     data.track.push(buffer.slice(trackPoints[i], trackPoints[i] + trackLength));
   }
   
