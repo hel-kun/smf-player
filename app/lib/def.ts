@@ -14,10 +14,14 @@ export type Scale = "C" | "C#" | "D" | "D#" | "E" | "F" | "F#" | "G" | "G#" | "A
 
 export type Note = {
   scale: Scale;
-  octave: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 ;
+  octave: Octave;
   timing: number;
   length: number;
   velocity: number;
+}
+export type Octave = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export function isOctave(octave:number): octave is Octave {
+  return [0,1,2,3,4,5,6,7].includes(octave)
 }
 
 export type Tempo = {
@@ -40,3 +44,10 @@ export type SmfData = {
   header: Header;
   track: Track;
 }
+
+export type  ScaleMap = {
+  [key: number]: {
+    scale: Scale;
+    octave: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  };
+};
